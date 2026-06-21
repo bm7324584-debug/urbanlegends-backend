@@ -1,0 +1,135 @@
+/* Fuente */
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Animación del formulario */
+section{
+    animation: aparecer .6s ease;
+}
+
+@keyframes aparecer{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* Inputs */
+
+input,
+textarea{
+
+    transition:.3s;
+}
+
+input:focus,
+textarea:focus{
+
+    outline:none;
+    border:2px solid #2563eb;
+    box-shadow:0 0 10px rgba(37,99,235,.3);
+
+}
+
+/* Botón */
+
+button{
+
+    transition:.3s;
+}
+
+button:hover{
+
+    transform:scale(1.03);
+
+}
+
+/* Tarjetas */
+
+.tarjeta{
+
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 10px 20px rgba(0,0,0,.12);
+    transition:.3s;
+
+}
+
+.tarjeta:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.tarjeta img{
+
+    width:100%;
+    height:220px;
+    object-fit:cover;
+
+}
+
+.tarjeta .contenido{
+
+    padding:18px;
+
+}
+
+.tarjeta h3{
+
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:10px;
+
+}
+
+.tarjeta p{
+
+    color:#555;
+}
+
+audio{
+
+    width:100%;
+    margin-top:15px;
+
+}
+
+.botones{
+
+    display:flex;
+    justify-content:space-between;
+    margin-top:18px;
+
+}
+
+.editar{
+
+    background:#f59e0b;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+
+}
+
+.eliminar{
+
+    background:#dc2626;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+
+}

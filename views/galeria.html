@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería Multimedia NoSQL</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="bg-slate-100">
+
+    <!-- HEADER -->
+    <header class="bg-blue-700 text-white p-6 shadow-lg">
+        <h1 class="text-3xl font-bold">📸 Galería Multimedia NoSQL</h1>
+        <p>CRUD con Node.js + MongoDB Atlas</p>
+    </header>
+
+    <!-- CONTENIDO -->
+    <main class="max-w-6xl mx-auto p-6">
+
+        <!-- FORMULARIO -->
+        <section class="bg-white p-6 rounded-xl shadow-md">
+
+            <h2 class="text-2xl font-bold mb-4">Subir Multimedia</h2>
+
+            <form id="formMultimedia" enctype="multipart/form-data" class="space-y-4">
+
+                <input type="text" name="titulo" placeholder="Título"
+                    class="w-full border p-2 rounded" required>
+
+                <textarea name="descripcion" placeholder="Descripción"
+                    class="w-full border p-2 rounded"></textarea>
+
+                <input type="text" name="tags" placeholder="Etiquetas separadas por coma"
+                    class="w-full border p-2 rounded">
+
+                <input type="file" name="imagen" accept="image/*" required>
+
+                <input type="file" name="audio" accept="audio/*" required>
+
+                <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    Guardar
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- GALERÍA -->
+        <section class="mt-10">
+
+            <h2 class="text-xl font-bold mb-4">Registros</h2>
+
+            <div id="contenedor" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        </section>
+
+    </main>
+
+    <!-- SCRIPT -->
+    <script>
+
+        const form = document.getElementById("formMultimedia");
+        const contenedor = document.getElementById("contenedor");
+
+        // CREAR
+        form.addEventListener("submit", async (e) => {
+
+            e.preventDefault();
+
+            const datos = new FormData(form);
+
+            await fetch("/api/multimedia", {
+                method: "POST",
+                body: datos
+            });
+
+            form.reset();
+            cargar();
+
+        });
+
+        // LEER
+        async function cargar() {
+
+            const res = await fetch("/api/multimedia");
+            const data = await res.json();
+
+            contenedor.innerHTML = "";
+
+            data.forEach(item => {
+
+                contenedor.innerHTML += `
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+
+                    <img src="${item.imagenUrl}" class="w-full h-48 object-cover">
+
+                    <div class="p-4">
+
+                        <h3 class="font-bold text-lg">${item.titulo}</h3>
+                        <p class="text-gray-600">${item.descripcion || ""}</p>
+
+                        <p class="text-sm mt-2">
+                            🏷️ ${item.tags ? item.tags.join(", ") : ""}
+                        </p>
+
+                        <audio controls class="w-full mt-3">
+                            <source src="${item.audioUrl}">
+                        </audio>
+
+                        <div class="flex justify-between mt-4">
+
+                            <button onclick="eliminar('${item._id}')"
+                                class="bg-red-600 text-white px-3 py-1 rounded">
+                                Eliminar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            });
+
+        }
+
+        // DELETE
+        async function eliminar(id) {
+
+            await fetch("/api/multimedia/" + id, {
+                method: "DELETE"
+            });
+
+            cargar();
+
+        }
+
+        cargar();
+
+    </script>
+
+</body>
+
+</html>
